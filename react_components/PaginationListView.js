@@ -6,6 +6,7 @@ import PageView from './PageView';
 
 
 export default class PaginationListView extends Component {
+
   render() {
     let items = {};
 
@@ -77,10 +78,16 @@ export default class PaginationListView extends Component {
       }
     }
 
-    return (
-      <ul className={this.props.subContainerClassName}>
-        {createFragment(items)}
-      </ul>
+    return (  
+    <div className={this.props.containerClassName}>
+    <a className={this.props.previousLinkClassName} 
+    onClick={this.props.handlePreviousPage}>
+              {this.props.previousLabel}
+        </a>
+        { createFragment(items) } 
+        <a onClick={this.props.handleNextPage} className={this.props.nextLinkClassName}>{this.props.nextLabel}</a>
+        </div>
+     
     );
   }
 };

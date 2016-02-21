@@ -88,44 +88,26 @@ var PaginationBoxView = function (_Component) {
 
       var nextClasses = (0, _classnames2.default)(this.props.nextClassName, { disabled: this.state.selected === this.props.pageNum - 1 });
 
-      return _react2.default.createElement(
-        'ul',
-        { className: this.props.containerClassName },
-        _react2.default.createElement(
-          'li',
-          { onClick: this.handlePreviousPage, className: previousClasses },
-          _react2.default.createElement(
-            'a',
-            { href: '', className: this.props.previousLinkClassName },
-            this.props.previousLabel
-          )
-        ),
-        _react2.default.createElement(
-          'li',
-          null,
-          _react2.default.createElement(_PaginationListView2.default, {
-            onPageSelected: this.handlePageSelected,
-            selected: this.state.selected,
-            pageNum: this.props.pageNum,
-            pageRangeDisplayed: this.props.pageRangeDisplayed,
-            marginPagesDisplayed: this.props.marginPagesDisplayed,
-            breakLabel: this.props.breakLabel,
-            subContainerClassName: this.props.subContainerClassName,
-            pageClassName: this.props.pageClassName,
-            pageLinkClassName: this.props.pageLinkClassName,
-            activeClassName: this.props.activeClassName,
-            disabledClassName: this.props.disabledClassName })
-        ),
-        _react2.default.createElement(
-          'li',
-          { onClick: this.handleNextPage, className: nextClasses },
-          _react2.default.createElement(
-            'a',
-            { href: '', className: this.props.nextLinkClassName },
-            this.props.nextLabel
-          )
-        )
-      );
+      return _react2.default.createElement(_PaginationListView2.default, {
+        onPageSelected: this.handlePageSelected,
+        selected: this.state.selected,
+        pageNum: this.props.pageNum,
+        pageRangeDisplayed: this.props.pageRangeDisplayed,
+        marginPagesDisplayed: this.props.marginPagesDisplayed,
+        breakLabel: this.props.breakLabel,
+        nextLabel: this.props.nextLabel,
+        previousLabel: this.props.previousLabel,
+        subContainerClassName: this.props.subContainerClassName,
+        pageClassName: this.props.pageClassName,
+        pageLinkClassName: this.props.pageLinkClassName,
+        activeClassName: this.props.activeClassName,
+        disabledClassName: this.props.disabledClassName,
+        containerClassName: this.props.containerClassName,
+        nextLinkClassName: this.props.nextLinkClassName,
+        previousLinkClassName: this.props.previousLinkClassName,
+        handleNextPage: this.handleNextPage,
+        handlePreviousPage: this.handlePreviousPage
+      });
     }
   }, {
     key: 'componentWillReceiveProps',
@@ -147,6 +129,8 @@ PaginationBoxView.propTypes = {
   nextLabel: _react.PropTypes.node,
   breakLabel: _react.PropTypes.node,
   clickCallback: _react.PropTypes.func,
+  handlePreviousPage: _react.PropTypes.func,
+  handleNextPage: _react.PropTypes.func,
   initialSelected: _react.PropTypes.number,
   forceSelected: _react.PropTypes.number,
   containerClassName: _react.PropTypes.string,

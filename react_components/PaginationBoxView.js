@@ -14,6 +14,8 @@ export default class PaginationBoxView extends Component {
     nextLabel             : PropTypes.node,
     breakLabel            : PropTypes.node,
     clickCallback         : PropTypes.func,
+    handlePreviousPage    : PropTypes.func,
+    handleNextPage        : PropTypes.func,
     initialSelected       : PropTypes.number,
     forceSelected         : PropTypes.number,
     containerClassName    : PropTypes.string,
@@ -98,12 +100,11 @@ export default class PaginationBoxView extends Component {
                                    {disabled: this.state.selected === this.props.pageNum - 1});
 
     return (
-      <ul className={this.props.containerClassName}>
-        <li onClick={this.handlePreviousPage} className={previousClasses}>
-          <a href="" className={this.props.previousLinkClassName}>{this.props.previousLabel}</a>
-        </li>
+    
+     
+  
 
-        <li>
+          
           <PaginationListView
             onPageSelected={this.handlePageSelected}
             selected={this.state.selected}
@@ -111,17 +112,22 @@ export default class PaginationBoxView extends Component {
             pageRangeDisplayed={this.props.pageRangeDisplayed}
             marginPagesDisplayed={this.props.marginPagesDisplayed}
             breakLabel={this.props.breakLabel}
+            nextLabel={this.props.nextLabel}
+            previousLabel={this.props.previousLabel}
             subContainerClassName={this.props.subContainerClassName}
             pageClassName={this.props.pageClassName}
             pageLinkClassName={this.props.pageLinkClassName}
             activeClassName={this.props.activeClassName}
-            disabledClassName={this.props.disabledClassName} />
-        </li>
+            disabledClassName={this.props.disabledClassName}
+            containerClassName={this.props.containerClassName} 
+            nextLinkClassName={this.props.nextLinkClassName}
+              previousLinkClassName={this.props.previousLinkClassName}
+              handleNextPage={this.handleNextPage}
+                 handlePreviousPage={this.handlePreviousPage}
+            />
+   
 
-        <li onClick={this.handleNextPage} className={nextClasses}>
-          <a href="" className={this.props.nextLinkClassName}>{this.props.nextLabel}</a>
-        </li>
-      </ul>
+      
     );
   }
 
@@ -131,3 +137,4 @@ export default class PaginationBoxView extends Component {
     }
   }
 };
+
