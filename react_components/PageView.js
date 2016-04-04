@@ -5,22 +5,20 @@ import React from 'react';
 export default class PageView extends React.Component {
   render() {
     let linkClassName = this.props.pageLinkClassName;
-    let cssClassName = this.props.pageClassName;
 
     if (this.props.selected) {
-      if (typeof(cssClassName) !== 'undefined') {
-        cssClassName = cssClassName + ' ' + this.props.activeClassName;
+      if (typeof(linkClassName) !== 'undefined') {
+        linkClassName = linkClassName + ' ' + this.props.activeClassName;
       } else {
-        cssClassName = this.props.activeClassName;
+        linkClassName = this.props.activeClassName;
       }
     }
 
     return (
-      
-            <a {...this.props} className={cssClassName}>
+            <a {...this.props} href="" className={linkClassName}>
               {this.props.page}
             </a>
-     
     );
   }
 };
+

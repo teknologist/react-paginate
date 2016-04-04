@@ -2,7 +2,10 @@
 
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
-import PaginationListView from './PaginationListView';
+
+import createFragment from 'react-addons-create-fragment';
+import PageView from './PageView';
+import BreakView from './BreakView';
 
 
 export default class PaginationBoxView extends Component {
@@ -14,8 +17,6 @@ export default class PaginationBoxView extends Component {
     nextLabel             : PropTypes.node,
     breakLabel            : PropTypes.node,
     clickCallback         : PropTypes.func,
-    handlePreviousPage    : PropTypes.func,
-    handleNextPage        : PropTypes.func,
     initialSelected       : PropTypes.number,
     forceSelected         : PropTypes.number,
     containerClassName    : PropTypes.string,
@@ -47,7 +48,9 @@ export default class PaginationBoxView extends Component {
     super(props);
 
     this.state = {
-      selected: props.initialSelected ? props.initialSelected : 0
+      selected: props.initialSelected ? props.initialSelected :
+                props.forceSelected   ? props.forceSelected :
+                0
     };
   }
 
@@ -90,6 +93,85 @@ export default class PaginationBoxView extends Component {
     }
   };
 
+  pagination = () => {
+    let items = {};
+
+    if (this.props.pageNum <= this.props.pageRangeDisplayed) {
+
+      for (let index = 0; index < this.props.pageNum; index++) {
+        items['key' + index] = <PageView
+          onClick={this.handlePageSelected.bind(null, index)}
+          selected={this.state.selected === index}
+          pageClassName={this.props.pageClassName}
+          pageLinkClassName={this.props.pageLinkClassName}
+          activeClassName={this.props.activeClassName}
+          page={index + 1} />
+      }
+
+    } else {
+
+      let leftSide  = (this.props.pageRangeDisplayed / 2);
+      let rightSide = (this.props.pageRangeDisplayed - leftSide);
+
+      if (this.state.selected > this.props.pageNum - this.props.pageRangeDisplayed / 2) {
+        rightSide = this.props.pageNum - this.state.selected;
+        leftSide  = this.props.pageRangeDisplayed - rightSide;
+      }
+      else if (this.state.selected < this.props.pageRangeDisplayed / 2) {
+        leftSide  = this.state.selected;
+        rightSide = this.props.pageRangeDisplayed - leftSide;
+      }
+
+      let index;
+      let page;
+      let breakView;
+
+      for (index = 0; index < this.props.pageNum; index++) {
+
+        page = index + 1;
+
+        let pageView = (
+          <PageView
+            onClick={this.handlePageSelected.bind(null, index)}
+            selected={this.state.selected === index}
+            pageClassName={this.props.pageClassName}
+            pageLinkClassName={this.props.pageLinkClassName}
+            activeClassName={this.props.activeClassName}
+            page={index + 1} />
+        );
+
+        if (page <= this.props.marginPagesDisplayed) {
+          items['key' + index] = pageView;
+          continue;
+        }
+
+        if (page > this.props.pageNum - this.props.marginPagesDisplayed) {
+          items['key' + index] = pageView;
+          continue;
+        }
+
+        if ((index >= this.state.selected - leftSide) && (index <= this.state.selected + rightSide)) {
+          items['key' + index] = pageView;
+          continue;
+        }
+
+        let keys            = Object.keys(items);
+        let breakLabelKey   = keys[keys.length - 1];
+        let breakLabelValue = items[breakLabelKey];
+
+        if (this.props.breakLabel && breakLabelValue !== breakView) {
+          breakView = (
+            <BreakView breakLabel={this.props.breakLabel} pageLinkClassName={this.props.pageLinkClassName} />
+          );
+
+          items['key' + index] = breakView;
+        }
+      }
+    }
+
+    return items;
+  };
+
   render() {
     let disabled = this.props.disabledClassName;
 
@@ -100,41 +182,16 @@ export default class PaginationBoxView extends Component {
                                    {disabled: this.state.selected === this.props.pageNum - 1});
 
     return (
-    
-     
-  
+      <div className={this.props.containerClassName}>
 
-          
-          <PaginationListView
-            onPageSelected={this.handlePageSelected}
-            selected={this.state.selected}
-            pageNum={this.props.pageNum}
-            pageRangeDisplayed={this.props.pageRangeDisplayed}
-            marginPagesDisplayed={this.props.marginPagesDisplayed}
-            breakLabel={this.props.breakLabel}
-            nextLabel={this.props.nextLabel}
-            previousLabel={this.props.previousLabel}
-            subContainerClassName={this.props.subContainerClassName}
-            pageClassName={this.props.pageClassName}
-            pageLinkClassName={this.props.pageLinkClassName}
-            activeClassName={this.props.activeClassName}
-            disabledClassName={this.props.disabledClassName}
-            containerClassName={this.props.containerClassName} 
-            nextLinkClassName={this.props.nextLinkClassName}
-              previousLinkClassName={this.props.previousLinkClassName}
-              handleNextPage={this.handleNextPage}
-                 handlePreviousPage={this.handlePreviousPage}
-            />
-   
+          <a onClick={this.handlePreviousPage} href="" className={this.props.previousLinkClassName}>{this.props.previousLabel}</a>
 
-      
+
+        {createFragment(this.pagination())}
+
+          <a onClick={this.handleNextPage} className={this.props.nextLinkClassName}>{this.props.nextLabel}</a>
+
+      </div>
     );
   }
-
-  componentWillReceiveProps(nextProps) {
-    if (typeof nextProps.forceSelected !== 'undefined' && nextProps.forceSelected !== this.state.selected) {
-      this.setState({ selected: nextProps.forceSelected });
-    }
-  }
 };
-
