@@ -105,7 +105,7 @@ export default class PaginationBoxView extends Component {
           pageClassName={this.props.pageClassName}
           pageLinkClassName={this.props.pageLinkClassName}
           activeClassName={this.props.activeClassName}
-          page={index + 1} />
+          page={index + 1} />;
       }
 
     } else {

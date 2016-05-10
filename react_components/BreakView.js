@@ -4,9 +4,8 @@ import React from 'react';
 
 export default class BreakView extends React.Component {
   render() {
-    let linkClassName = this.props.pageLinkClassName;
     return (
-       <a {...this.props} href="" className={linkClassName}>
+       <a {...this.props} href="" className={this.props.pageLinkClassName}>
         {this.props.breakLabel}
       </a>
     );
