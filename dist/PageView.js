@@ -33,19 +33,18 @@ var PageView = function (_React$Component) {
     key: 'render',
     value: function render() {
       var linkClassName = this.props.pageLinkClassName;
-      var cssClassName = this.props.pageClassName;
 
       if (this.props.selected) {
-        if (typeof cssClassName !== 'undefined') {
-          cssClassName = cssClassName + ' ' + this.props.activeClassName;
+        if (typeof linkClassName !== 'undefined') {
+          linkClassName = linkClassName + ' ' + this.props.activeClassName;
         } else {
-          cssClassName = this.props.activeClassName;
+          linkClassName = this.props.activeClassName;
         }
       }
 
       return _react2.default.createElement(
         'a',
-        _extends({}, this.props, { className: cssClassName }),
+        _extends({}, this.props, { href: '', className: linkClassName }),
         this.props.page
       );
     }
